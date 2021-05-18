@@ -1,0 +1,80 @@
+runners:
+ AWS-runner:
+  image: ubuntu-vitis-2020-1
+
+jobs:   
+ build-SW-emu:
+  runner: AWS-runner
+  type:
+   build: software
+  input: 
+   artifact: 
+    - xilinx_u200_xdma_201830_2.zip
+    - bbx/petalinux-sysroot
+    - bbx/petalinux-firmware
+    - bbx/vitis-libraries
+  output:
+   artifact:
+    - Emulation-SW/build.sh
+    - sw_emu.sh
+    - Emulation-SW/launch.sh
+    - Emulation-SW/launch.expect
+  steps:
+   - run:
+      name: Download files
+      command: |
+       git clone https://github.com/mwijeyasinghebbx/test_images
+       mv test_images/* /tools/Xilinx/Vitis/2020.1/platforms/plat/sw/xilinx_zcu104_base_202010_1/xrt/image/
+      type: miscellaneous 
+   - run:
+      name: Run Software Emulation Build
+      command: time Emulation-SW/build.sh
+      type: sw-emulation    
+ build-HW-emu:
+  runner: AWS-runner
+  type:
+   build: hw-emulation
+  output:
+   artifact:
+    - Emulation-HW/build.sh
+    - hw_emu.sh
+    - Emulation-HW/launch.sh
+    - Emulation-HW/launch.expect
+  input: 
+   artifact: 
+    - xilinx_u200_xdma_201830_2.zip
+    - bbx/petalinux-sysroot
+    - bbx/petalinux-firmware
+    - bbx/vitis-libraries
+  steps:
+   - run:
+      name: Download files
+      command: |
+       git clone https://github.com/mwijeyasinghebbx/test_images
+       mv test_images/* /tools/Xilinx/Vitis/2020.1/platforms/plat/sw/xilinx_zcu104_base_202010_1/xrt/image/
+      type: miscellaneous  
+   - run:
+      name: Run Hardware Emulation Build
+      command: time Emulation-HW/build.sh
+      type: hw-emulation  
+ build-HW:
+  runner: AWS-runner
+  type:
+   build: hardware
+  input: 
+   artifact: 
+    - xilinx_u200_xdma_201830_2.zip
+    - bbx/petalinux-sysroot
+    - bbx/petalinux-firmware
+    - bbx/vitis-libraries
+  steps:
+   - run:
+      name: Build HW
+      command: time Hardware/build.sh
+      type: Hardware 
+workflows:
+ complete-build-test:
+  jobs:
+   - build-SW-emu
+   - build-HW-emu
+   - build-HW
