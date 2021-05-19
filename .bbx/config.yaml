@@ -10,8 +10,6 @@ jobs:
   input: 
    artifact: 
     - xilinx_u200_xdma_201830_2.zip
-    - bbx/petalinux-sysroot
-    - bbx/petalinux-firmware
     - bbx/vitis-libraries
   output:
    artifact:
@@ -43,8 +41,6 @@ jobs:
   input: 
    artifact: 
     - xilinx_u200_xdma_201830_2.zip
-    - bbx/petalinux-sysroot
-    - bbx/petalinux-firmware
     - bbx/vitis-libraries
   steps:
    - run:
@@ -64,8 +60,6 @@ jobs:
   input: 
    artifact: 
     - xilinx_u200_xdma_201830_2.zip
-    - bbx/petalinux-sysroot
-    - bbx/petalinux-firmware
     - bbx/vitis-libraries
   steps:
    - run:
