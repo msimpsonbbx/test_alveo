@@ -19,12 +19,6 @@ jobs:
     - Emulation-SW/launch.expect
   steps:
    - run:
-      name: Download files
-      command: |
-       git clone https://github.com/mwijeyasinghebbx/test_images
-       mv test_images/* /tools/Xilinx/Vitis/2020.1/platforms/plat/sw/xilinx_zcu104_base_202010_1/xrt/image/
-      type: miscellaneous 
-   - run:
       name: Run Software Emulation Build
       command: time Emulation-SW/build.sh
       type: sw-emulation    
@@ -42,13 +36,7 @@ jobs:
    artifact: 
     - xilinx_u200_xdma_201830_2.zip
     - bbx/vitis-libraries
-  steps:
-   - run:
-      name: Download files
-      command: |
-       git clone https://github.com/mwijeyasinghebbx/test_images
-       mv test_images/* /tools/Xilinx/Vitis/2020.1/platforms/plat/sw/xilinx_zcu104_base_202010_1/xrt/image/
-      type: miscellaneous  
+  steps:  
    - run:
       name: Run Hardware Emulation Build
       command: time Emulation-HW/build.sh
